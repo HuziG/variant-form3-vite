@@ -165,6 +165,9 @@
           <el-tab-pane label="Vue3" name="vue3">
             <code-editor :mode="'html'" :readonly="true" v-model="sfcCodeV3" :user-worker="false"></code-editor>
           </el-tab-pane>
+          <el-tab-pane label="Vue3 Setup" name="vue3_setup">
+            <code-editor :mode="'html'" :readonly="true" v-model="sfcCodeV3Setup" :user-worker="false"></code-editor>
+          </el-tab-pane>
         </el-tabs>
         <template #footer>
           <div class="dialog-footer">
@@ -172,8 +175,13 @@
               {{i18nt('designer.hint.copyVue2SFC')}}</el-button>
             <el-button type="primary" class="copy-vue3-sfc-btn" :data-clipboard-text="sfcCodeV3" @click="copyV3SFC">
               {{i18nt('designer.hint.copyVue3SFC')}}</el-button>
+            <el-button type="primary" class="copy-vue3-sfc-btn" :data-clipboard-text="sfcCodeV3Setup" @click="copyV3SFCSetup">
+              {{i18nt('designer.hint.copyVue3SetupSFC')}}</el-button>
+
             <el-button @click="saveV2SFC">{{i18nt('designer.hint.saveVue2SFC')}}</el-button>
             <el-button @click="saveV3SFC">{{i18nt('designer.hint.saveVue3SFC')}}</el-button>
+            <el-button @click="saveV3SFCSetup">{{i18nt('designer.hint.saveVue3SFCSetup')}}</el-button>
+
             <el-button @click="showExportSFCDialogFlag = false">
               {{i18nt('designer.hint.closePreview')}}</el-button>
           </div>
@@ -243,6 +251,7 @@
 
         sfcCode: '',
         sfcCodeV3: '',
+        sfcCodeV3Setup: '',
 
         activeCodeTab: 'vue',
         activeSFCTab: 'vue2',
@@ -560,6 +569,7 @@
         loadBeautifier(beautifier => {
           this.sfcCode = genSFC(this.designer.formConfig, this.designer.widgetList, beautifier)
           this.sfcCodeV3 = genSFC(this.designer.formConfig, this.designer.widgetList, beautifier, true)
+          this.sfcCodeV3Setup = genSFC(this.designer.formConfig, this.designer.widgetList, beautifier, true,true)
           this.showExportSFCDialogFlag = true
         })
       },
@@ -580,12 +590,24 @@
         )
       },
 
+      copyV3SFCSetup(e) {
+        copyToClipboard(this.sfcCodeV3Setup, e,
+            this.$message,
+            this.i18nt('designer.hint.copySFCSuccess'),
+            this.i18nt('designer.hint.copySFCFail')
+        )
+      },
+
       saveV2SFC() {
         this.saveAsFile(this.sfcCode, `vformV2-${generateId()}.vue`)
       },
 
       saveV3SFC() {
         this.saveAsFile(this.sfcCodeV3, `vformV3-${generateId()}.vue`)
+      },
+
+      saveV3SFCSetup() {
+        this.saveAsFile(this.sfcCodeV3Setup, `vformV3Setup-${generateId()}.vue`)
       },
 
       getFormData() {

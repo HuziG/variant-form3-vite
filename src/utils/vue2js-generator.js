@@ -5,7 +5,7 @@ import FormValidators, {getRegExp} from "@/utils/validators";
 export function buildDefaultValueListFn(formConfig, widgetList, resultList) {
   return function(fieldWidget) {
     const fop = fieldWidget.options
-    const fd = fop.defaultValue
+    const fd = fop.inactiveValue || fop.defaultValue
     if (isNotNull(fd)) {
       resultList.push(`${fop.name}: ${JSON.stringify(fd)},`)
     } else {

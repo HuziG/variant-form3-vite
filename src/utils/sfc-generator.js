@@ -2,6 +2,7 @@ import {isNotNull} from "@/utils/util";
 import {genVue2JS} from "@/utils/vue2js-generator";
 import {beautifierOpts} from "@/utils/beautifierLoader";
 import {genVue3JS} from "@/utils/vue3js-generator";
+import {genVue3SetupJS} from "@/utils/vue3js-generator";
 
 export function buildClassAttr(ctn, defaultClass) {
   const cop = ctn.options
@@ -431,6 +432,10 @@ function genTemplate(formConfig, widgetList, vue3Flag = false) {
     label-position="${formConfig.labelPosition}" label-width="${formConfig.labelWidth}px" size="${formConfig.size || 'default'}"
     ${submitAttr}>
   ${!!childrenList ? childrenList.join('\n') : ''}
+  <el-form-item>
+    <el-button type="primary" @click="submitForm">提交</el-button>
+    <el-button @click="resetForm">重置</el-button>
+  </el-form-item>
 </el-form>`
 
   return formTemplate
@@ -556,9 +561,15 @@ export const registerFWGenerator = function (fieldType, ftGenerator) {
   elTemplates[fieldType] = ftGenerator
 }
 
-export const genSFC = function (formConfig, widgetList, beautifier, vue3Flag = false) {
+export const genSFC = function (formConfig, widgetList, beautifier, vue3Flag = false, setup = false) {
   const html = beautifier.html(genTemplate(formConfig, widgetList, vue3Flag), beautifierOpts.html)
-  const js = beautifier.js(!!vue3Flag ? genVue3JS(formConfig, widgetList): genVue2JS(formConfig, widgetList), beautifierOpts.js)
+  const js = beautifier.js((() => {
+    if (vue3Flag) {
+      return setup ? genVue3SetupJS(formConfig, widgetList) : genVue3JS(formConfig, widgetList)
+    } else {
+      return genVue2JS(formConfig, widgetList)
+    }
+  })(), beautifierOpts.js)
   const globalCss = beautifier.css(genGlobalCSS(formConfig), beautifierOpts.css)
   const scopedCss = beautifier.css(genScopedCSS(formConfig, vue3Flag), beautifierOpts.css)
 
@@ -571,7 +582,7 @@ https://www.vform666.com
 ${html}
 </template>
 
-<script>
+${setup ? '<script setup>' : '<script>'}
 ${js}
 </script>
 
