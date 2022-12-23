@@ -543,6 +543,8 @@ export const basicFields = [
       switchWidth: 40,
       activeText: '',
       inactiveText: '',
+      activeValue: true,
+      inactiveValue: false,
       activeColor: null,
       inactiveColor: null,
       //-------------------

@@ -151,6 +151,8 @@ function getElAttrs(widget, formConfig) {  //获取El组件属性
 
     activeText: !!wop.activeText ? `active-text="${wop.activeText}"` : '',
     inactiveText: !!wop.inactiveText ? `inactive-text="${wop.inactiveText}"` : '',
+    activeValue: !!wop.activeValue ? `active-text="${wop.activeValue}"` : '',
+    inactiveValue: !!wop.inactiveValue ? `inactive-text="${wop.inactiveValue}"` : '',
     activeColor: !!wop.activeColor ? `active-color="${wop.activeColor}"` : '',
     inactiveColor: !!wop.inactiveColor ? `inactive-color="${wop.inactiveColor}"` : '',
     switchWidth: (!isNaN(wop.switchWidth) && (wop.switchWidth !== 40)) ? `:width="${wop.switchWidth}"` : '',
@@ -286,9 +288,9 @@ const elTemplates = {  //字段组件属性
   },
 
   'switch': (widget, formConfig) => {
-    const {vModel, disabled, activeText, inactiveText, activeColor, inactiveColor, switchWidth
+    const {vModel, disabled, activeText, inactiveText, activeValue, inactiveValue, activeColor, inactiveColor, switchWidth
       } = getElAttrs(widget, formConfig)
-    return `<el-switch ${vModel} ${disabled} ${activeText} ${inactiveText} ${activeColor} ${inactiveColor}
+    return `<el-switch ${vModel} ${disabled} ${activeText} ${inactiveText} ${activeValue} ${inactiveValue} ${activeColor} ${inactiveColor}
             ${switchWidth}></el-switch>`
   },
 

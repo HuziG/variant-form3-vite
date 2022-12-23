@@ -5,6 +5,7 @@
     <el-switch ref="fieldEditor" v-model="fieldModel"
                :disabled="field.options.disabled"
                :active-text="field.options.activeText" :inactive-text="field.options.inactiveText"
+               :active-value="field.options.activeValue" :inactive-value="field.options.inactiveValue"
                :active-color="field.options.activeColor" :inactive-color="field.options.inactiveColor"
                :width="field.options.switchWidth"
                @change="handleChangeEvent">
